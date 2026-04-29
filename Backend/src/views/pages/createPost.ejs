@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Post - DevConnect</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #181825; color: #cdd6f4; font-family: sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+    .wrap { flex: 1; max-width: 680px; margin: 40px auto; padding: 0 20px; width: 100%; }
+    .card { background: #1e1e2e; padding: 36px; border-radius: 12px; }
+    h2 { color: #cba6f7; margin-bottom: 24px; }
+    label { display: block; margin-bottom: 6px; color: #a6adc8; font-size: 0.9rem; }
+    input, textarea { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #313244; background: #181825; color: #cdd6f4; margin-bottom: 16px; font-size: 1rem; font-family: sans-serif; }
+    textarea { height: 160px; resize: vertical; }
+    button { padding: 12px 28px; background: #cba6f7; color: #1e1e2e; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+    .error { color: #f38ba8; margin-bottom: 12px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <div class="wrap">
+    <div class="card">
+      <h2>Create a New Post</h2>
+      <% if (typeof error !== 'undefined') { %><p class="error"><%= error %></p><% } %>
+      <form method="POST" action="/posts/create">
+        <label>Title</label>
+        <input type="text" name="title" placeholder="Post title..." required />
+        <label>Content</label>
+        <textarea name="content" placeholder="Write your post here..." required></textarea>
+        <button type="submit">Publish Post</button>
+      </form>
+    </div>
+  </div>
+  <%- include('../partials/footer') %>
+</body>
+</html>

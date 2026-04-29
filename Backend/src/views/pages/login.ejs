@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - DevConnect</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #181825; color: #cdd6f4; font-family: sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+    .form-wrap { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+    .card { background: #1e1e2e; padding: 36px; border-radius: 12px; width: 100%; max-width: 420px; }
+    h2 { color: #cba6f7; margin-bottom: 24px; text-align: center; }
+    label { display: block; margin-bottom: 6px; color: #a6adc8; font-size: 0.9rem; }
+    input { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #313244; background: #181825; color: #cdd6f4; margin-bottom: 16px; font-size: 1rem; }
+    button { width: 100%; padding: 12px; background: #cba6f7; color: #1e1e2e; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+    .msg { text-align: center; margin-top: 14px; font-size: 0.9rem; color: #a6adc8; }
+    .msg a { color: #89b4fa; }
+    .error { color: #f38ba8; margin-bottom: 12px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <div class="form-wrap">
+    <div class="card">
+      <h2>Welcome Back</h2>
+      <% if (typeof error !== 'undefined') { %><p class="error"><%= error %></p><% } %>
+      <form method="POST" action="/login">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="you@example.com" required />
+        <label>Password</label>
+        <input type="password" name="password" placeholder="••••••••" required />
+        <button type="submit">Login</button>
+      </form>
+      <p class="msg">Don't have an account? <a href="/register">Register</a></p>
+    </div>
+  </div>
+  <%- include('../partials/footer') %>
+</body>
+</html>

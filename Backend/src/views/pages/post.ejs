@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= post.title %> - DevConnect</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #181825; color: #cdd6f4; font-family: sans-serif; }
+    .wrap { max-width: 700px; margin: 40px auto; padding: 0 20px; }
+    .card { background: #1e1e2e; border-radius: 12px; padding: 30px; margin-bottom: 20px; }
+    h1 { color: #cba6f7; margin-bottom: 10px; }
+    .meta { font-size: 0.85rem; color: #6c7086; margin-bottom: 20px; }
+    .content { line-height: 1.7; color: #cdd6f4; white-space: pre-wrap; }
+    .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+    .btn { padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: bold; text-decoration: none; display: inline-block; }
+    .btn-like    { background: #313244; color: #cdd6f4; }
+    .btn-liked   { background: #f38ba8; color: #1e1e2e; }
+    .btn-delete  { background: #f38ba8; color: #1e1e2e; }
+
+    /* Comments */
+    .comments h2 { color: #cba6f7; margin-bottom: 16px; }
+    .comment { background: #181825; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+    .comment .author { font-size: 0.85rem; color: #89b4fa; font-weight: bold; margin-bottom: 4px; }
+    .comment .text   { color: #cdd6f4; font-size: 0.95rem; }
+    .comment .date   { font-size: 0.75rem; color: #6c7086; margin-top: 4px; }
+    textarea { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #313244; background: #181825; color: #cdd6f4; font-size: 1rem; font-family: sans-serif; height: 90px; resize: vertical; margin-bottom: 10px; }
+    .btn-submit { background: #cba6f7; color: #1e1e2e; padding: 10px 24px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 0.95rem; }
+    .no-comments { color: #6c7086; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <div class="wrap">
+
+    <!-- Post Card -->
+    <div class="card">
+      <h1><%= post.title %></h1>
+      <div class="meta">
+        By <%= post.author?.name || 'Unknown' %> &bull; <%= new Date(post.createdAt).toDateString() %>
+      </div>
+      <div class="content"><%= post.content %></div>
+
+      <div class="actions">
+
+        <!-- Like button -->
+        <form method="POST" action="/posts/<%= post._id %>/like">
+          <button type="submit" class="btn <%= liked ? 'btn-liked' : 'btn-like' %>">
+             <%= liked ? 'Liked' : 'Like' %> (<%= post.likes.length %>)
+          </button>
+        </form>
+
+        <!-- Delete (only for post owner) -->
+        <% if (user && post.author && user.id === post.author._id.toString()) { %>
+          <form method="POST" action="/posts/<%= post._id %>/delete">
+            <button type="submit" class="btn btn-delete"
+              onclick="return confirm('Delete this post?')">🗑 Delete</button>
+          </form>
+        <% } %>
+
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="card comments">
+      <h2>Comments (<%= comments.length %>)</h2>
+
+      <!-- Add comment form (only if logged in) -->
+      <% if (user) { %>
+        <form method="POST" action="/posts/<%= post._id %>/comments">
+          <textarea name="content" placeholder="Write a comment..." required></textarea>
+          <button type="submit" class="btn-submit">Post Comment</button>
+        </form>
+        <br/>
+      <% } else { %>
+        <p class="no-comments" style="margin-bottom:16px;">
+          <a href="/login" style="color:#89b4fa;">Login</a> to leave a comment.
+        </p>
+      <% } %>
+
+      <!-- List comments -->
+      <% if (comments.length === 0) { %>
+        <p class="no-comments">No comments yet.</p>
+      <% } %>
+      <% comments.forEach(c => { %>
+        <div class="comment">
+          <div class="author"><%= c.author?.name || 'Unknown' %></div>
+          <div class="text"><%= c.content %></div>
+          <div class="date"><%= new Date(c.createdAt).toDateString() %></div>
+        </div>
+      <% }) %>
+    </div>
+
+  </div>
+
+  <%- include('../partials/footer') %>
+</body>
+</html>

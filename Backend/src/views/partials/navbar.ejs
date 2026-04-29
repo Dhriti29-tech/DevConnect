@@ -1,0 +1,13 @@
+<nav style="background:#1e1e2e;padding:14px 30px;display:flex;justify-content:space-between;align-items:center;">
+  <a href="/" style="color:#cba6f7;font-size:1.4rem;font-weight:bold;text-decoration:none;">DevConnect</a>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <a href="/" style="color:#cdd6f4;text-decoration:none;">Home</a>
+    <% if (typeof user !== 'undefined' && user) { %>
+      <a href="/posts/create" style="color:#a6e3a1;text-decoration:none;font-weight:bold;">+ Create Post</a>
+      <a href="/logout" style="color:#f38ba8;text-decoration:none;">Logout</a>
+    <% } else { %>
+      <a href="/register" style="color:#cdd6f4;text-decoration:none;">Register</a>
+      <a href="/login" style="color:#cdd6f4;text-decoration:none;">Login</a>
+    <% } %>
+  </div>
+</nav>
